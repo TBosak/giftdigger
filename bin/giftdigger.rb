@@ -1,8 +1,8 @@
 module Giftdigger
 require 'watir'
 require 'webdrivers'
-require 'httparty'
 require_relative 'botbones.rb'
+require 'httparty'
 
 foxy = Watir::Browser.new :firefox, profile: 'default'
 url = "www.steamgifts.com"
@@ -15,36 +15,19 @@ term = gets
 puts "How many discussions would you like to dig through? Higher numbers run into older discussions with mostly ended giveaways."
 @digamount = gets.to_i
 url = "www.steamgifts.com/discussions/search?q=#{term}"
-otherurl = "https://www.steamgifts.com/discussions/search?q=#{term}"
 @place = URI(url)
 foxy.goto(@place)
-response = HTTParty.get(URI(otherurl))
-discustring="/discussion/...../[a-z 0-9 -]+\""
-links = []
-response.each_line { |line| link = /#{discustring}/.match(line); links<<link }
-@newlinks = []
-links.each do |x|
-    if x == nil
-      links.delete(x)
-    else
-    y = x.to_s
-    @newlinks<<y.gsub(/\"/,"")
-  end
-end
-x = 0
-while x < @digamount do
-foxy.goto(@place)
-@discussion = foxy.link(href: @newlinks[x])
-@discussion.click
-@disq = foxy.url
-response = HTTParty.get(@disq)
-givstring = "https://www.steamgifts.com/giveaway/...../[a-z 0-9 -]+\""
-@fingas = Check(response, givstring)
+@links = foxy.links.collect(&:href)
+@finlinks = @links.uniq.select{|x| x.match("https://www.steamgifts.com/discussion/.*")}
+
+num = 0
+while num < @digamount do
+@finlinks.each do |x|
+@response = HTTParty.get(x)
+givstring = "https://www.steamgifts.com/giveaway/.*\""
+@fingas = Check(@response, givstring)
 @fingas.each do |x|
-  foxy.goto(@disq)
-  newga = foxy.link(href: x)
-  newga.click
-  #begin
+  foxy.goto(x)
     enter = foxy.div(class: "sidebar__entry-insert")
   if enter.present? == true
     enter.click
@@ -52,7 +35,8 @@ givstring = "https://www.steamgifts.com/giveaway/...../[a-z 0-9 -]+\""
     next
   end
 end
-  x += 1
+num += 1
 end
 puts "All done! Thanks for playing!"
+end
 end
