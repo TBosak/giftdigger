@@ -7,6 +7,9 @@ You will definitely need a Steamgifts account if you don't have it.
 
 Download Repo > Run "Giftdigger.exe" > ??? > Profit!
 
+
+
+
 Future commits checklist:
 
 Support for Linux and Mac OS
