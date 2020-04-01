@@ -1,17 +1,11 @@
 # giftdigger
-Simple bot for auto-entering invite-only Steamgifts giveaways found in discussions.
-
-This program is optimized for usage with 64-bit Windows. 
-
-You will definitely need a Steamgifts account if you don't have it.
+Simple bot for auto-entering invite-only Steamgifts giveaways found in discussions. 
 
 Download Repo > Run "Giftdigger.exe" > ??? > Profit!
 
 ------------------------------------------------------------------------------------------------------------------------------------------
 
 Future commits checklist:
-
-Support for Linux and Mac OS
 
 Exception handlers for browser selection
 
